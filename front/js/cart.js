@@ -4,7 +4,8 @@ console.log("recapitulatif du localStorage : ", typeof panierLocalStorage);
 let resultatSousTotal = [];
 for (choix in panierLocalStorage) {
   console.log("le choix n° " + choix, panierLocalStorage[choix]);
-  let sousTotalPrix = panierLocalStorage[choix].prixProduit * panierLocalStorage[choix].quantity;
+  let sousTotalPrix =
+    panierLocalStorage[choix].prixProduit * panierLocalStorage[choix].quantity;
   console.log("le sous total n° " + choix, sousTotalPrix, " €");
   resultatSousTotal.push(sousTotalPrix);
   positionnageCardItem.innerHTML += `
@@ -30,7 +31,6 @@ for (choix in panierLocalStorage) {
             </article>
 
     `;
-
 }
 // prix total
 
@@ -43,30 +43,29 @@ let prixTotal = resultatSousTotal.reduce(reducer);
 console.log(resultatSousTotal.reduce(reducer));
 positionnagePrixTotal.innerHTML += `${prixTotal}`;
 
-
-
+//methode 1
 //let positionnagetest = document.getElementsByClassName("itemQuantity");
 //console.log(positionnagetest);
 //positionnagetest.addEventListener("change",showProduct);
 
 //async function showProduct() {
-  //  let quantitye=this.options[this.selectedIndex].value;
- //   console.log( quantitye);
- //   return showProduct;
+//  let quantitye=this.options[this.selectedIndex].value;
+//   console.log( quantitye);
+//   return showProduct;
 //}
 //let valeur= showProduct();
 //console.log("va", valeur)
 
-
-
-
-
+//methode 2
+//let positionnagetest = document.getElementsByClassName("itemQuantity");
+//console.log(positionnagetest);
 //let v = positionnagetest.value;
-//console.log("valuuu", v);
+//console.log("valeur", v);
+
 //console.log(positionnagetest[0].value);
 //console.log(prixTotal);
-//let testclacul = prixTotal * positionnagetest.value;
-//positionnagePrixTotal.innerHTML = `${testclacul}`;
+//let testcalcul = prixTotal * positionnagetest.value;
+//positionnagePrixTotal.innerHTML = `${testcalcul}`;
 
 console.log(
   "Il y a " + resultatSousTotal.length + " articles dans le panier et "
