@@ -1,66 +1,52 @@
-//let myStorage =window.localStorage;
-//console.log(myStorage.getItem("panier"));
-
-//déclaration variable generales
+//DECLARATIONS GENERALES
 
 let urlApiGlobale = "http://localhost:3000/api/products";
 let fetchValue = [];
 let positionnageItems;
-let fetchContent;
+let contenuDesItems;
+let messageError = `Une erreur est survenue. Veuillez vous reconnecter`;
 
-//console.log("positionnageItems");
-positionnageItems = document.getElementById("items");
-console.log(positionnageItems);
-fetchContent = fetch(urlApiGlobale)
-  .then(function (res) {
-    if (res.ok) {
-      return res.json();
-    }
-  })
-  .then(function (value) {
-    console.log(value.length);
-    console.log(value);
+affichageArticles(urlApiGlobale);
 
-   
-    fetchValue = value;
-    console.log(fetchValue.length);
-    console.log(fetchValue);
+//FONCTION SERVANT A INJECTER DU CONTENU DANS LE DOM
+async function injectionDansLeDom(positionDom, contenu) {
+  positionDom.innerHTML += contenu;
+}
 
-    console.log(`contenue de l'API-CANAPE: ${fetchValue.length}`);
-
-    for (let i = 0; i < value.length; i++) {
-      function convertir(prixApi) {
-        let conversion = prixApi / 100;
-        return conversion;
+// FONCTION PERMETTANT LA RECUPERATION DES PRODUIT DE L'API + MESSAGE ERREUR
+async function affichageArticles(paramsUrl) {
+  positionnageItems = document.getElementById("items");
+  
+  fetch(paramsUrl)
+    .then(function (res) {
+      if (res.ok) {
+        return res.json();
       }
+    })
+    .then(function (value) {      
+      for (let i = 0; i < value.length; i++) {       
+        let product;
+        product = value[i];        
 
-      let product;
-
-      product = value[i];
-      //console.log("la" + product.name);
-
-      // MAP NOUVEAU PROJET
-      
-      positionnageItems.innerHTML += `<a href="./product.html?id=${product._id}">
+        // APPEL DE LA FONCTION INJECTION
+        contenuDesItems =`
+        <a href="./product.html?id=${product._id}">
             <article>
               <img src="${product.imageUrl}" alt="${product.altTxt}">
               <h3 class="productName">${product.name}</h3>
               <p class="productDescription">${product.description}</p>
             </article>
-          </a>`;
-          
-          //console.log("positionnageItems.innerHTML");
-    }
-    // alert(content.innerHTML);
-  })
-  .catch(function (err) {
-    // Une erreur est survenue
-  });
+          </a>
+          `;
 
+        injectionDansLeDom(positionnageItems, contenuDesItems);
 
-  // LOCAL STORAGE
+      }
+      
+    })
+    .catch(function (err) {
+      // APPEL DE LA FONCTION INJECTION
+      injectionDansLeDom(positionnageItems, messageError);
+    });
 
-  //let myStorage = window.localStorage;
-  //let panier = new Array(idProduct, "micael");
-  //console.log(panier);
-  //myStorage.setItem("panier", panier);
+}
