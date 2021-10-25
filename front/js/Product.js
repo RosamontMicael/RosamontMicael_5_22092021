@@ -9,23 +9,19 @@ let urlPageActuelle;
 let urlApiGlobale = "http://localhost:3000/api/products";
 let urlApiChoisi;
 let productChoisi;
-let produitDansPanier = JSON.parse(window.localStorage.getItem("produitDansLocalS"));
 
 //***DEFINITION FONCTION injectionDansLeDom : INJECTER DU CONTENU DANS LE DOM
 async function injectionDansLeDom(positionDom, contenu) {
   positionDom.innerHTML = contenu;
 }
 
-//***OPTION PERMETTANT DE VERIFIER ET/OU INITIALISER LE PANIER 
-if (produitDansPanier === null) {
-  produitDansPanier = [];
-}
+//***OPTION PERMETTANT DE VERIFIER ET/OU INITIALISER LE PANIER
 
 //***FONCTION POUR RECUPERER L'ID DE LA PAGE ACTUELLE
 
-let idProductChoisi=()=> {
-  let parametreUrlPage = window.location.search;  
-  let urlConstructor = new URLSearchParams(parametreUrlPage);  
+let idProductChoisi = () => {
+  let parametreUrlPage = window.location.search;
+  let urlConstructor = new URLSearchParams(parametreUrlPage);
   let idChoisi = urlConstructor.get("id");
   return idChoisi;
 };
@@ -35,15 +31,16 @@ urlApiChoisi = urlApiGlobale + "/" + idProductChoisi();
 
 //***PERMETTRE LA RECUPERATION DES PRODUIT AVEC LES BONS + MESSAGE ERREUR
 fetchContent = fetch(urlApiChoisi)
-  .then(function (res) {  //*** TEST DE LA REPONSE + TRANSFORMATION EN JSON
+  .then(function (res) {
+    //*** TEST DE LA REPONSE + TRANSFORMATION EN JSON
     if (res.ok) {
       return res.json();
     }
   })
 
-  .then(function (value) {    
+  .then(function (value) {
     productChoisi = value;
-    
+
     //***INJECTION DE LIMAGE
 
     positionnageImage = document.querySelector("div.item__img");
@@ -70,7 +67,7 @@ fetchContent = fetch(urlApiChoisi)
     positionnageDescription = document.getElementById("description");
     contenuDescription = productChoisi.description;
     injectionDansLeDom(positionnageDescription, contenuDescription);
-   
+
     //----------------------------------------------------
 
     //***INJECTION INFOS COLORS
@@ -89,6 +86,13 @@ fetchContent = fetch(urlApiChoisi)
       event.preventDefault();
       event.stopPropagation();
 
+      let produitDansPanier = JSON.parse(
+        window.localStorage.getItem("produitDansLocalS")
+      );
+      if (produitDansPanier === null) {
+        produitDansPanier = [];
+      }
+
       //RECUPERATION DES DETAILS DU PRODUIT CHOISI
 
       let productColors;
@@ -101,6 +105,7 @@ fetchContent = fetch(urlApiChoisi)
 
       // CREATION DUN OBJET POUR LE PRODUIT SELECTIONNE
 
+      
       let choixProduitSelection = {
         nomProduit: productChoisi.name,
         productId: idProductChoisi(),
@@ -115,15 +120,14 @@ fetchContent = fetch(urlApiChoisi)
       confirm("etes vous sûr de votre choix ?");
 
       //FILTRE POUR OBLIGER LUTILISATEUR DE METTRE UN CHOIX DE COULEUR ET QUANTITE
-      // Condition1_True: A ton selectionné une couleur et une quantté?
+      // Condition1_True: A ton selectionné une couleur et une quantté entre 1 et 100?
       if (
         choixProduitSelection.couleur != "" &&
-        choixProduitSelection.quantity > 0
+        choixProduitSelection.quantity > 0 &&
+        choixProduitSelection.quantity <=100
       ) {
         // Condition2_True: Le tableau representant Le panier a til deja un produit?
         if (produitDansPanier.length > 0) {
-          
-          
           // Condition3_True: Permet de savoir l'index du produit deja existant
           let indiceProduit = -1;
           for (let indice in produitDansPanier) {
@@ -155,7 +159,7 @@ fetchContent = fetch(urlApiChoisi)
 
           //let loCAlS = localStorage.getItem("produitDansLocalS");
           //Condition2_False: Le tableau representant Le panier a til deja un produit?
-        } else {         
+        } else {
           //1/
           produitDansPanier.push(choixProduitSelection);
           //2/
@@ -167,7 +171,7 @@ fetchContent = fetch(urlApiChoisi)
         // Condition1_False: A ton selectionné une couleur et une quantté?
       } else {
         // MESSAGE POUR CONTRAINDRE CHOIX COULEUR ET QUANTITE
-        alert("Merci d'indiquer votre choix de couleur et la quantité");
+        alert("Merci d'indiquer votre choix de couleur et une quantité entre 1 et 100");
       }
     });
   })

@@ -3,6 +3,16 @@ let positionnageCardItem = document.getElementById("cart__items");
 let panierLocalStorage = JSON.parse(localStorage.getItem("produitDansLocalS"));
 let resultatSousTotal = [];
 
+//FONCTION SERVANT TRIER LE PANIER
+panierLocalStorage.sort(function trie(a, b) {
+  if (a.nomProduit < b.nomProduit) {
+    return -1;
+  }
+  if (a.nomProduit > b.nomProduit) {
+    return 1;
+  }
+  return 0;
+});
 //FONCTION SERVANT A INJECTER DU CONTENU DANS LE DOM
 async function injectionDansLeDom(positionDom, contenu) {
   positionDom.innerHTML += contenu;
@@ -164,15 +174,15 @@ btnEnvoiFormulaire.addEventListener("click", (e) => {
   let email = contact.email;
 
   function isValidNameAndLast(value) {
-    return /^[A-Za-z\s-]{3,20}$/.test(value);
+    return /^[\W\w]{3,20}$/.test(value);
   }
 
   function isValidCity(value) {
-    return /^[A-Za-z\s]{3,20}$/.test(value);
+    return /^[\W\w]{3,20}$/.test(value);
   }
 
   function isValidAddress(value) {
-    return /^[A-Za-z0-9\s]{5,50}$/.test(value);
+    return /^[\W\w]{5,50}$/.test(value);
   }
   // function isValidCity(value) {
   // return /^e[0-9]{3,}$/.test(value);
