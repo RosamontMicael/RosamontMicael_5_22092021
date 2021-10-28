@@ -58,7 +58,7 @@ for (choix in panierLocalStorage) {
   injectionDansLeDom(positionnageCardItem, contenuCartItems);
 }
 
-//***INJECTION: QTE TT
+//***INJECTION: QTE ToTale
 let positionnageQteTotalArticle = document.getElementById("totalQuantity");
 let contenuQteTotalArticle = `${resultatSousTotal.length}`;
 injectionDansLeDom(positionnageQteTotalArticle, contenuQteTotalArticle);
@@ -174,15 +174,15 @@ btnEnvoiFormulaire.addEventListener("click", (e) => {
   let email = contact.email;
 
   function isValidNameAndLast(value) {
-    return /^[\W\w]{3,20}$/.test(value);
+    return /^[A-Z - a-z][^0-9-@]{2,20}$/.test(value);
   }
-
+    
   function isValidCity(value) {
-    return /^[\W\w]{3,20}$/.test(value);
+    return /^[\W\w][^0-9-@]{3,20}$/.test(value);
   }
 
   function isValidAddress(value) {
-    return /^[\W\w]{5,50}$/.test(value);
+    return /^[\W\w][^@]{5,50}$/.test(value);
   }
   // function isValidCity(value) {
   // return /^e[0-9]{3,}$/.test(value);
