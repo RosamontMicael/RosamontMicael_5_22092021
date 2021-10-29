@@ -1,5 +1,5 @@
 let confirmationCommande = localStorage.getItem("orderId");
-console.log("orderId ", confirmationCommande);
+
 
 //AFFICHAGE
 let positionnageOrderId = document.getElementById("orderId");
